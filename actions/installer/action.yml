@@ -52,4 +52,4 @@ runs:
         REPOSITORY: "${{ github.repository }}"
       working-directory: actions/installer/dist
       shell: bash
-      run: nodejs index.js 
+      run: npm run main 
