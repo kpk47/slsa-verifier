@@ -17,17 +17,19 @@ description: 'Installs SLSA verifier and adds it to your PATH'
 branding:
   icon: 'package'
   color: 'blue'
-env:
-  ACTION_REF: "${{ github.action_ref }}"
 runs:
   using: 'composite'
   steps:
+    - name: Get Action Ref
+      shell: bash
+      env:
+        ACTION_REF: "${{ github.action_ref }}"
+      run: echo "action_ref=$ACTION_REF" >> $GITHUB_ENV
     - name: Checkout
       uses: actions/checkout@93ea575cb5d8a053eaa0ac8fa3b40d7e05a33cc8 # tag=v3.1.0
       with:
         repository: "slsa-framework/slsa-verifier"
-        ref: "$ACTION_REF"
-
+        ref: "${{ env.action_ref }}"
     - name: Setup Node.js 16
       uses: actions/setup-node@969bd2663942d722d85b6a8626225850c2f7be4b # tag=v3.5.0
       with:
