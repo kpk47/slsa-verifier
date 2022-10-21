@@ -52,4 +52,5 @@ runs:
         REPOSITORY: "${{ github.repository }}"
       working-directory: actions/installer/dist
       shell: bash
-      run: npm run main 
+      run: npm start
+      
