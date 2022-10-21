@@ -47,7 +47,7 @@ export async function getVerifierVersion(actionRef: string): Promise<string> {
     const { data: releases } = await octokit.request(
       "GET /repos/{repository_owner}/{repository}/releases",
       {
-        repository_owner: "slsa-framework",
+        repository_owner: "kpk47",
         repository: "slsa-verifier",
       }
     );
@@ -55,7 +55,7 @@ export async function getVerifierVersion(actionRef: string): Promise<string> {
       const { data: commit } = await octokit.request(
         "GET /reps/{repository_owner}/{repository}/git/ref/tags/{tagName}",
         {
-          repository_owner: "slsa-framework",
+          repository_owner: "kpk47",
           repository: "slsa-verifier",
         }
       );
@@ -66,7 +66,7 @@ export async function getVerifierVersion(actionRef: string): Promise<string> {
     }
   }
   throw new Error(
-    `Invalid version provided: ${actionRef}. For the set of valid versions, see https://github.com/slsa-framework/slsa-verifier/releases.`
+    `Invalid version provided: ${actionRef}. For the set of valid versions, see https://github.com/kpk47/slsa-verifier/releases.`
   );
 }
 
@@ -102,7 +102,7 @@ async function run(): Promise<void> {
   } catch (error: unknown) {
     const errMsg = error instanceof Error ? error.message : String(error);
     core.setFailed(
-      `Invalid version provided. For the set of valid versions, see https://github.com/slsa-framework/slsa-verifier/releases. ${errMsg}`
+      `Invalid version provided. For the set of valid versions, see https://github.com/kpk47/slsa-verifier/releases. ${errMsg}`
     );
     cleanup();
     return;
@@ -116,7 +116,7 @@ async function run(): Promise<void> {
   try {
     // Download bootstrap version and validate SHA256 checksum
     bootstrapVerifierPath = await tc.downloadTool(
-      `https://github.com/slsa-framework/slsa-verifier/releases/download/${BOOTSTRAP_VERSION}/slsa-verifier-linux-amd64`,
+      `https://github.com/kpk47/slsa-verifier/releases/download/${BOOTSTRAP_VERSION}/slsa-verifier-linux-amd64`,
       `${bootstrapDir}/${BINARY_NAME}`
     );
   } catch (error: unknown) {
@@ -142,7 +142,7 @@ async function run(): Promise<void> {
   try {
     // Download requested version binary and provenance
     downloadedBinaryPath = await tc.downloadTool(
-      `https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`,
+      `https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`,
       `${installDir}/${BINARY_NAME}`
     );
   } catch (error: unknown) {
@@ -154,7 +154,7 @@ async function run(): Promise<void> {
   let downloadedProvenancePath;
   try {
     downloadedProvenancePath = await tc.downloadTool(
-      `https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`,
+      `https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`,
       `${installDir}/${PROVENANCE_NAME}`
     );
   } catch (error: unknown) {
@@ -171,7 +171,7 @@ async function run(): Promise<void> {
       [
         `-artifact-path=${downloadedBinaryPath}`,
         `-provenance=${downloadedProvenancePath}`,
-        `-source=github.com/slsa-framework/slsa-verifier`,
+        `-source=github.com/kpk47/slsa-verifier`,
         `-tag=${version}`,
       ]
     );

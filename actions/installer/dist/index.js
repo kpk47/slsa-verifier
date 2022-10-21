@@ -83,13 +83,13 @@ function getVerifierVersion(actionRef) {
         if (shaRe.test(actionRef)) {
             const octokit = github.getOctokit(process.env.TOKEN || "");
             const { data: releases } = yield octokit.request("GET /repos/{repository_owner}/{repository}/releases", {
-                repository_owner: 'slsa-framework',
-                repository: 'slsa-verifier',
+                repository_owner: "kpk47",
+                repository: "slsa-verifier",
             });
             for (const release of releases) {
                 const { data: commit } = yield octokit.request("GET /reps/{repository_owner}/{repository}/git/ref/tags/{tagName}", {
-                    repository_owner: 'slsa-framework',
-                    repository: 'slsa-verifier',
+                    repository_owner: "kpk47",
+                    repository: "slsa-verifier",
                 });
                 const commitSha = commit.object.sha;
                 if (commitSha === actionRef) {
@@ -97,7 +97,7 @@ function getVerifierVersion(actionRef) {
                 }
             }
         }
-        throw new Error(`Invalid version provided: ${actionRef}. For the set of valid versions, see https://github.com/slsa-framework/slsa-verifier/releases.`);
+        throw new Error(`Invalid version provided: ${actionRef}. For the set of valid versions, see https://github.com/kpk47/slsa-verifier/releases.`);
     });
 }
 exports.getVerifierVersion = getVerifierVersion;
@@ -131,7 +131,7 @@ function run() {
         }
         catch (error) {
             const errMsg = error instanceof Error ? error.message : String(error);
-            core.setFailed(`Invalid version provided. For the set of valid versions, see https://github.com/slsa-framework/slsa-verifier/releases. ${errMsg}`);
+            core.setFailed(`Invalid version provided. For the set of valid versions, see https://github.com/kpk47/slsa-verifier/releases. ${errMsg}`);
             cleanup();
             return;
         }
@@ -141,7 +141,7 @@ function run() {
         let bootstrapVerifierPath;
         try {
             // Download bootstrap version and validate SHA256 checksum
-            bootstrapVerifierPath = yield tc.downloadTool(`https://github.com/slsa-framework/slsa-verifier/releases/download/${BOOTSTRAP_VERSION}/slsa-verifier-linux-amd64`, `${bootstrapDir}/${BINARY_NAME}`);
+            bootstrapVerifierPath = yield tc.downloadTool(`https://github.com/kpk47/slsa-verifier/releases/download/${BOOTSTRAP_VERSION}/slsa-verifier-linux-amd64`, `${bootstrapDir}/${BINARY_NAME}`);
         }
         catch (error) {
             const errMsg = error instanceof Error ? error.message : String(error);
@@ -158,7 +158,7 @@ function run() {
         let downloadedBinaryPath;
         try {
             // Download requested version binary and provenance
-            downloadedBinaryPath = yield tc.downloadTool(`https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`, `${installDir}/${BINARY_NAME}`);
+            downloadedBinaryPath = yield tc.downloadTool(`https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`, `${installDir}/${BINARY_NAME}`);
         }
         catch (error) {
             const errMsg = error instanceof Error ? error.message : String(error);
@@ -168,7 +168,7 @@ function run() {
         }
         let downloadedProvenancePath;
         try {
-            downloadedProvenancePath = yield tc.downloadTool(`https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`, `${installDir}/${PROVENANCE_NAME}`);
+            downloadedProvenancePath = yield tc.downloadTool(`https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`, `${installDir}/${PROVENANCE_NAME}`);
         }
         catch (error) {
             const errMsg = error instanceof Error ? error.message : String(error);
@@ -181,7 +181,7 @@ function run() {
             const { exitCode, stdout, stderr } = yield exec.getExecOutput(`${bootstrapVerifierPath}`, [
                 `-artifact-path=${downloadedBinaryPath}`,
                 `-provenance=${downloadedProvenancePath}`,
-                `-source=github.com/slsa-framework/slsa-verifier`,
+                `-source=github.com/kpk47/slsa-verifier`,
                 `-tag=${version}`,
             ]);
             if (exitCode !== 0) {
