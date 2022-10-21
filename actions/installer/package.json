@@ -11,7 +11,7 @@
     "package": "ncc build --source-map",
     "lint": "eslint src/**/*.ts",
     "build": "npm run compile && npm run package",
-    "main" :"nodejs dist/index.js",
+    "start": "node lib/index.js",
     "all": "npm run compile && npm run format && npm run lint && npm run test && npm run package"
   },
   "dependencies": {
