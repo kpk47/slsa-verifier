@@ -82,19 +82,14 @@ function getVerifierVersion(actionRef) {
         const shaRe = /^[a-f\d]{40}$/;
         if (shaRe.test(actionRef)) {
             const octokit = github.getOctokit(process.env.TOKEN || "");
-            const { data: releases } = yield octokit.request("GET /repos/{owner}/{repository}/releases", {
+            const { data: tags } = yield octokit.request("GET /repos/{owner}/{repository}/tags", {
                 owner: "slsa-framework",
                 repository: "slsa-verifier",
             });
-            for (const release of releases) {
-                const { data: commit } = yield octokit.request("GET /reps/{owner}/{repository}/git/ref/tags/{tagName}", {
-                    owner: "slsa-framework",
-                    repository: "slsa-verifier",
-                    tagName: release.tag_name,
-                });
-                const commitSha = commit.object.sha;
+            for (const tag of tags) {
+                const commitSha = tag.commit.sha;
                 if (commitSha === actionRef) {
-                    return release.tag_name;
+                    return tag.name;
                 }
             }
         }
