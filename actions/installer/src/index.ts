@@ -45,17 +45,18 @@ export async function getVerifierVersion(actionRef: string): Promise<string> {
   if (shaRe.test(actionRef)) {
     const octokit = github.getOctokit(process.env.TOKEN || "");
     const { data: releases } = await octokit.request(
-      "GET /repos/{repository}/releases",
+      "GET /repos/{repository_owner}/{repository}/releases",
       {
-        repository: process.env.REPOSITORY,
+        repository_owner: "slsa-framework",
+        repository: "slsa-verifier",
       }
     );
     for (const release of releases) {
       const { data: commit } = await octokit.request(
-        "GET /reps/{repository}/git/ref/tags/{tagName}",
+        "GET /reps/{repository_owner}/{repository}/git/ref/tags/{tagName}",
         {
-          repository: process.env.REPOSITORY,
-          tagName: release.tag_name,
+          repository_owner: "slsa-framework",
+          repository: "slsa-verifier",
         }
       );
       const commitSha = commit.object.sha;
