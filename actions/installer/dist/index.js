@@ -83,7 +83,7 @@ function getVerifierVersion(actionRef) {
         if (shaRe.test(actionRef)) {
             const octokit = github.getOctokit(process.env.TOKEN || "");
             const { data: tags } = yield octokit.request("GET /repos/{owner}/{repository}/tags", {
-                owner: "slsa-framework",
+                owner: "kpk47",
                 repository: "slsa-verifier",
             });
             for (const tag of tags) {
@@ -154,7 +154,7 @@ function run() {
         let downloadedBinaryPath;
         try {
             // Download requested version binary and provenance
-            downloadedBinaryPath = yield tc.downloadTool(`https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`, `${installDir}/${BINARY_NAME}`);
+            downloadedBinaryPath = yield tc.downloadTool(`https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`, `${installDir}/${BINARY_NAME}`);
         }
         catch (error) {
             const errMsg = error instanceof Error ? error.message : String(error);
@@ -164,7 +164,7 @@ function run() {
         }
         let downloadedProvenancePath;
         try {
-            downloadedProvenancePath = yield tc.downloadTool(`https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`, `${installDir}/${PROVENANCE_NAME}`);
+            downloadedProvenancePath = yield tc.downloadTool(`https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`, `${installDir}/${PROVENANCE_NAME}`);
         }
         catch (error) {
             const errMsg = error instanceof Error ? error.message : String(error);
@@ -177,7 +177,7 @@ function run() {
             const { exitCode, stdout, stderr } = yield exec.getExecOutput(`${bootstrapVerifierPath}`, [
                 `-artifact-path=${downloadedBinaryPath}`,
                 `-provenance=${downloadedProvenancePath}`,
-                `-source=github.com/slsa-framework/slsa-verifier`,
+                `-source=github.com/kpk47/slsa-verifier`,
                 `-tag=${version}`,
             ]);
             if (exitCode !== 0) {

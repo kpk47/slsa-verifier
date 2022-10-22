@@ -47,7 +47,7 @@ export async function getVerifierVersion(actionRef: string): Promise<string> {
     const { data: tags } = await octokit.request(
       "GET /repos/{owner}/{repository}/tags",
       {
-        owner: "slsa-framework",
+        owner: "kpk47",
         repository: "slsa-verifier",
       }
     );
@@ -135,7 +135,7 @@ async function run(): Promise<void> {
   try {
     // Download requested version binary and provenance
     downloadedBinaryPath = await tc.downloadTool(
-      `https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`,
+      `https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64`,
       `${installDir}/${BINARY_NAME}`
     );
   } catch (error: unknown) {
@@ -147,7 +147,7 @@ async function run(): Promise<void> {
   let downloadedProvenancePath;
   try {
     downloadedProvenancePath = await tc.downloadTool(
-      `https://github.com/slsa-framework/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`,
+      `https://github.com/kpk47/slsa-verifier/releases/download/${version}/slsa-verifier-linux-amd64.intoto.jsonl`,
       `${installDir}/${PROVENANCE_NAME}`
     );
   } catch (error: unknown) {
@@ -164,7 +164,7 @@ async function run(): Promise<void> {
       [
         `-artifact-path=${downloadedBinaryPath}`,
         `-provenance=${downloadedProvenancePath}`,
-        `-source=github.com/slsa-framework/slsa-verifier`,
+        `-source=github.com/kpk47/slsa-verifier`,
         `-tag=${version}`,
       ]
     );
