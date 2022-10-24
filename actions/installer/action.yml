@@ -18,5 +18,5 @@ branding:
   icon: 'package'
   color: 'blue'
 runs:
-  using: 'composite'
+  using: 'node16'
   main: 'dist/index.js'
